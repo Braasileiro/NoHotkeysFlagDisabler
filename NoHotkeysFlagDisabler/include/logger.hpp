@@ -1,3 +1,5 @@
+// https://www.geeksforgeeks.org/logging-system-in-cpp
+
 #include "pch.h"
 
 enum LogLevel {
