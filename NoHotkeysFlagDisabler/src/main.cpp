@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "logger.hpp"
 
+// States
+int kNotified = 0;
+
 // https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerrawinputdevices
 static BOOL(WINAPI* _RegisterRawInputDevices)(PCRAWINPUTDEVICE pRawInputDevices, UINT uiNumDevices, UINT cbSize) = RegisterRawInputDevices;
 
@@ -23,10 +26,30 @@ BOOL WINAPI HK_RegisterRawInputDevices(PCRAWINPUTDEVICE pRawInputDevices, UINT u
         // Check if the device has a RIDEV_NOHOTKEYS flag
         if (current.dwFlags & RIDEV_NOHOTKEYS)
         {
-            // Override with the default (0)
-            current.dwFlags = 0;
+            /*
+             * Override with RIDEV_NOLEGACY. Prevents RawInput from sending 'WM_' notifications.
+             * This flag prevents double input in some applications that use RawInput and LegacyInput together.
+             * ReShade is affected by this in games that use both APIs.
+             */
+            current.dwFlags = RIDEV_NOLEGACY;
 
-            // TODO: Log here
+            // TODO: External configuration for the user to be able to configure the flags they want?
+
+            /*
+             * Maximum of 5 notifications.
+             * Some applications frequently unregister and register RawInput devices.
+             */
+            if (kNotified < 5)
+            {
+                logger.Log(INFO, "The device has RIDEV_NOHOTKEYS flag. Replacing with RIDEV_NOLEGACY...");
+
+                kNotified += 1;
+
+                if (kNotified == 5)
+                {
+                    logger.Log(INFO, "Flag override messages on devices will no longer be notified.");
+                }
+            }
         }
 
         devices.push_back(current);
