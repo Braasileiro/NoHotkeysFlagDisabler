@@ -107,13 +107,20 @@ void Detach()
     }
 }
 
+void Init()
+{
+    Logger::Init();
+
+    Attach();
+}
+
 // Entry
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-        Attach();
+        Init();
         break;
     case DLL_THREAD_ATTACH:
         break;
