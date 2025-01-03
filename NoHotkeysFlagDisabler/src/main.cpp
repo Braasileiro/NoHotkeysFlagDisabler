@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "logger.hpp"
+#include "logger.h"
 
 // States
 int kNotified = 0;
@@ -12,7 +12,7 @@ BOOL WINAPI HK_RegisterRawInputDevices(PCRAWINPUTDEVICE pRawInputDevices, UINT u
 {
     if (cbSize != sizeof(RAWINPUTDEVICE))
     {
-        logger.Log(WARNING, "RegisterRawInputDevices struct size not matches. Running with the original parameters.");
+        spdlog::warn("RegisterRawInputDevices struct size not matches. Running with the original parameters.");
 
         return _RegisterRawInputDevices(pRawInputDevices, uiNumDevices, cbSize);
     }
@@ -41,13 +41,13 @@ BOOL WINAPI HK_RegisterRawInputDevices(PCRAWINPUTDEVICE pRawInputDevices, UINT u
              */
             if (kNotified < 5)
             {
-                logger.Log(INFO, "The device has RIDEV_NOHOTKEYS flag. Replacing with RIDEV_NOLEGACY...");
+                spdlog::info("The device has RIDEV_NOHOTKEYS flag. Replacing with RIDEV_NOLEGACY...");
 
                 kNotified += 1;
 
                 if (kNotified == 5)
                 {
-                    logger.Log(INFO, "Flag override messages on devices will no longer be notified.");
+                    spdlog::info("Flag override messages on devices will no longer be notified.");
                 }
             }
         }
@@ -72,13 +72,13 @@ BOOL Commit()
     case NO_ERROR:
         return TRUE;
     case ERROR_INVALID_DATA:
-        logger.Log(EXCEPTION, "DetourTransactionCommit returned ERROR_INVALID_DATA.");
+        spdlog::error("DetourTransactionCommit returned ERROR_INVALID_DATA.");
         return FALSE;
     case ERROR_INVALID_OPERATION:
-        logger.Log(EXCEPTION, "DetourTransactionCommit returned ERROR_INVALID_OPERATION.");
+        spdlog::error("DetourTransactionCommit returned ERROR_INVALID_OPERATION.");
         return FALSE;
     default:
-        logger.Log(EXCEPTION, "DetourTransactionCommit returned an unknown error.");
+        spdlog::error("DetourTransactionCommit returned an unknown error.");
         return FALSE;
     }
 }
@@ -91,7 +91,7 @@ void Attach()
 
     if (Commit())
     {
-        logger.Log(INFO, "RegisterRawInputDevices hook attached.");
+        spdlog::info("RegisterRawInputDevices hook attached.");
     }
 }
 
@@ -103,7 +103,7 @@ void Detach()
 
     if (Commit())
     {
-        logger.Log(INFO, "RegisterRawInputDevices hook detached.");
+        spdlog::info("RegisterRawInputDevices hook detached.");
     }
 }
 

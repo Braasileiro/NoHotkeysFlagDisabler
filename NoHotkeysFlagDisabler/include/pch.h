@@ -1,16 +1,12 @@
 #pragma once
 
 #define WIN32_LEAN_AND_MEAN
+#define FMT_HEADER_ONLY
 
 // Windows
 #include <Windows.h>
 
-// Standard
-#include <ctime>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <vector>
-
 // Deps
-#include <detours.h>
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <detours/detours.h>

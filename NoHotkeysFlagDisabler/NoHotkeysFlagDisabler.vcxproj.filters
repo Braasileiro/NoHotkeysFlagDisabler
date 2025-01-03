@@ -18,7 +18,7 @@
     <ClInclude Include="include\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\logger.hpp">
+    <ClInclude Include="include\logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -37,7 +37,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NoHotkeysFlagDisabler.rc">
