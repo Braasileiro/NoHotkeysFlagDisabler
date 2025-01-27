@@ -1,4 +1,6 @@
 # NoHotkeysFlagDisabler
+### The development of this project has been moved to [Win32Hooks](https://github.com/Braasileiro/Win32Hooks).
+
 Disable [**RIDEV_NOHOTKEYS**](https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rawinputdevice) flag on RawInput devices.
 
 You know that game that blocks any function of the **WIN** key and only minimizes with ALT+TAB? Or worse, if you don't have any other windows open, ALT+TAB is no longer a solution and you end up pressing CTRL+ALT+DEL to be able to minimize the game in Borderless or Fullscreen.
